@@ -5,6 +5,13 @@ import java.io.IOException;
 
 public class Utils {
 
+    public static boolean isCharInArray(char c, char[] arr) {
+        for(int i = 0; i < arr.length; i++) {
+            if(c == arr[i]) return true;
+        }
+        return false;
+    }
+
     public static void loadCustomFont() {
 
         String fullPath = "/fonts/" + Game.CUSTOM_FONT_FOLDER + "/" + Game.CUSTOM_FONT_NAME + Game.CUSTOM_FONT_EXTENSION;

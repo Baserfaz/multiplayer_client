@@ -110,7 +110,7 @@ public abstract class Panel extends GuiElement {
                     w + borderThickness * 2, h + borderThickness * 2);
             g2d.setStroke(defaultStroke);
         }
-        
+
         // render all elements inside this panel
         updatePanelItems();
         for(GuiElement e : elements) {

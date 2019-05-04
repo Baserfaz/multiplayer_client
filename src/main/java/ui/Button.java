@@ -40,7 +40,7 @@ public class Button extends GuiElement implements InteractableGuiElement {
             g.fillRect(x, y, w, h);
 
             int txtWidth = g.getFontMetrics().stringWidth(this.txt);
-            int txtHeight = g.getFontMetrics().getHeight();
+            int txtHeight = g.getFontMetrics() .getHeight();
 
             int centerX = (x + w / 2) - txtWidth / 2;
             int centerY = (y + txtHeight + h / 2) - txtHeight / 2;
@@ -55,7 +55,7 @@ public class Button extends GuiElement implements InteractableGuiElement {
         }
     }
 
-    public void tick() { if(this.isEnabled()) {} }
+    public void tick() {}
 
     @Override
     public void onHover() {

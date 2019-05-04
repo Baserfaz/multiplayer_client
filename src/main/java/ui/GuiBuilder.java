@@ -13,6 +13,8 @@ public class GuiBuilder {
         );
 
         panel.addElement(GuiFactory.createDefaultTextField(panel));
+        panel.addElement(GuiFactory.createDefaultPasswordField(panel));
+
         panel.addElement(GuiFactory.createDefaultConnectButton(panel));
         panel.addElement(GuiFactory.createDefaultExitButton(panel));
 

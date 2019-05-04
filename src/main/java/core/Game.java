@@ -75,7 +75,7 @@ public class Game extends Canvas implements Runnable {
 
         this.spriteStorage.loadSprites();
 
-        this.keyInput = new KeyInput();
+        this.keyInput = new KeyInput(guiElementManager);
         this.mouseInput = new MouseInput(guiElementManager);
 
         this.addKeyListener(this.keyInput);
@@ -170,6 +170,10 @@ public class Game extends Canvas implements Runnable {
         this.renderer.preRender(g);
         g.dispose();
         bs.show();
+    }
+
+    public GuiElementManager getGuiElementManager() {
+        return guiElementManager;
     }
 
     public GameState getGameState() {

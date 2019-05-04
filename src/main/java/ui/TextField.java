@@ -17,6 +17,7 @@ public class TextField extends GuiElement implements InteractableGuiElement {
 
     private boolean isSelected = false;
     private boolean isEditable;
+    private boolean isPassword;
     private int textMargin;
     private int fontSize;
     private int maxLength;
@@ -26,11 +27,12 @@ public class TextField extends GuiElement implements InteractableGuiElement {
 
     public TextField(Panel panel, int w, int h,
                      int textMargin, int fontSize, int maxlen,
-                     boolean isEditable) {
+                     boolean isEditable, boolean isPassword) {
         super(panel.x, panel.y, w, h);
 
         this.maxLength = maxlen;
         this.isEditable = isEditable;
+        this.isPassword = isPassword;
         this.parent = panel;
         this.textMargin = textMargin;
         this.fontSize = fontSize;
@@ -78,12 +80,31 @@ public class TextField extends GuiElement implements InteractableGuiElement {
         // render text
         g2d.setFont(font);
         g2d.setColor(fontColor);
-        g2d.drawString(value, xx + textMargin,
-                yy + textMargin + (this.fontMetrics.getHeight() / 2));
+
+        if(this.isPassword) {
+            g2d.drawString(
+                    createPasswordShowValue(),
+                    xx + textMargin,
+                    yy + textMargin + (this.fontMetrics.getHeight() / 2)
+            );
+        } else {
+            g2d.drawString(
+                    value,
+                    xx + textMargin,
+                    yy + textMargin + (this.fontMetrics.getHeight() / 2)
+            );
+        }
 
         // set the old stroke
         g2d.setStroke(oldStroke);
+    }
 
+    private String createPasswordShowValue() {
+        String val = "";
+        for (int i = 0; i < value.length(); i++) {
+            val += "*";
+        }
+        return val;
     }
 
     @Override
@@ -114,4 +135,23 @@ public class TextField extends GuiElement implements InteractableGuiElement {
         return new Rectangle(x, y, w, h);
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
 }
