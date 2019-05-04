@@ -33,20 +33,17 @@ public class Button extends GuiElement implements InteractableGuiElement {
     public void render(Graphics g) {
         if(this.isVisible()) {
 
-            Rectangle r = new Rectangle(this.x + this.parent.x,
-                    this.y + this.parent.y, this.w, this.h);
-
             if (this.isHovering) g.setColor(this.bgColor.darker());
             else g.setColor(this.bgColor);
 
             // render box
-            g.fillRect(r.x, r.y, r.width, r.height);
+            g.fillRect(x, y, w, h);
 
             int txtWidth = g.getFontMetrics().stringWidth(this.txt);
             int txtHeight = g.getFontMetrics().getHeight();
 
-            int centerX = (r.x + r.width / 2) - txtWidth / 2;
-            int centerY = (r.y + txtHeight + r.height / 2) - txtHeight / 2;
+            int centerX = (x + w / 2) - txtWidth / 2;
+            int centerY = (y + txtHeight + h / 2) - txtHeight / 2;
 
             // render text inside the button rectangle
             Font font = Game.instance

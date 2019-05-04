@@ -92,23 +92,27 @@ public abstract class Panel extends GuiElement {
         Graphics2D g2d = (Graphics2D) g;
         Stroke defaultStroke = g2d.getStroke();
 
+        // update our position
         Point pos = this.calculatePanelAlignmentPos();
+        x = pos.x;
+        y = pos.y;
 
         // draw rect
         if(!this.isTransparent) {
             g2d.setColor(backgroundColor);
-            g2d.fillRect(pos.x, pos.y, w, h);
+            g2d.fillRect(x, y, w, h);
         }
 
         if (drawBorders) {
             g2d.setStroke(new BasicStroke(borderThickness));
             g2d.setColor(borderColor);
-            g2d.drawRect(pos.x - borderThickness, pos.y - borderThickness,
+            g2d.drawRect(x - borderThickness, y - borderThickness,
                     w + borderThickness * 2, h + borderThickness * 2);
             g2d.setStroke(defaultStroke);
         }
-
+        
         // render all elements inside this panel
+        updatePanelItems();
         for(GuiElement e : elements) {
             e.render(g);
         }
