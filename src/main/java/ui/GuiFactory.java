@@ -19,7 +19,11 @@ public class GuiFactory {
 
     private static final int DEFAULT_TEXTFIELD_MAXLEN = 15;
 
-    public static PlainText createDefaultPlainText(Panel panel, HorizontalAlign align, String text, Color color) {
+    public static PlainText createDefaultPlainText(
+            Panel panel,
+            HorizontalAlign align,
+            String text,
+            Color color) {
         return new PlainText(panel, align, text, 40, color);
     }
 
@@ -31,11 +35,12 @@ public class GuiFactory {
     }
 
     public static HPanel createDefaultHorizontalPanel(Panel parent,
-                                                      Panel.PanelAlign panelAlign,
+                                                      VerticalAlign va,
+                                                      HorizontalAlign ha,
                                                       boolean isTransparent,
                                                       Color bgcolor) {
         return new HPanel(
-                panelAlign,
+                va, ha,
                 Game.instance.WIDTH + 10,
                 50,
                 parent,
@@ -49,8 +54,16 @@ public class GuiFactory {
     public static VPanel createDefaultCenteredPanel(Panel parent,
                                                     boolean isTransparent,
                                                     Color bgcolor) {
-        return new VPanel(Panel.PanelAlign.MIDDLE, DEFAULT_PANEL_WIDTH, DEFAULT_PANEL_HEIGHT, parent,
-                bgcolor, Colors.DARK_BLUE, isTransparent, true, 15, HorizontalAlign.CENTER);
+        return new VPanel(
+                VerticalAlign.MIDDLE,
+                HorizontalAlign.CENTER,
+                DEFAULT_PANEL_WIDTH, DEFAULT_PANEL_HEIGHT,
+                parent,
+                bgcolor, Colors.DARK_BLUE,
+                isTransparent,
+                true, 15,
+                HorizontalAlign.CENTER
+        );
     }
 
     public static Button createDefaultConnectButton(Panel panel) {

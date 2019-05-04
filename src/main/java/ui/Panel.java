@@ -1,12 +1,12 @@
 package ui;
 
+import core.Game;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Panel extends GuiElement {
-
-    public enum PanelAlign { NORTH, MIDDLE, SOUTH, WEST, EAST }
 
     protected Panel parent;
     protected int margin;
@@ -16,18 +16,27 @@ public abstract class Panel extends GuiElement {
     protected boolean drawBorders;
     protected boolean isTransparent;
 
-    protected PanelAlign panelAlign;
-
-    protected int xrelcam = 0, yrelcam = 0;
+    protected VerticalAlign verticalAlign;
+    protected HorizontalAlign horizontalAlign;
 
     protected List<GuiElement> elements = new ArrayList<>();
 
-    public Panel(PanelAlign panelAlign, int width, int height,
-                 Panel parent, Color bgColor, Color borderColor, boolean isTransparent,
-                 boolean borders, int borderThickness, int margin) {
-        super(width, height);
+    public Panel(
+            VerticalAlign va,
+            HorizontalAlign ha,
+            int width,
+            int height,
+            Panel parent,
+            Color bgColor,
+            Color borderColor,
+            boolean isTransparent,
+            boolean borders,
+            int borderThickness,
+            int margin) {
 
-        this.panelAlign = panelAlign;
+        super(width, height);
+        this.verticalAlign = va;
+        this.horizontalAlign = ha;
         this.parent = parent;
         this.backgroundColor = bgColor;
         this.isTransparent = isTransparent;
@@ -43,38 +52,37 @@ public abstract class Panel extends GuiElement {
 
     protected Point calculatePanelAlignmentPos() {
 
-//        // relative to camera position
-//        Rectangle cameraBounds = Game.instance.getCamera().getCameraBounds();
-//        int xx = x + (int) cameraBounds.getX();
-//        int yy = y + (int) cameraBounds.getY();
-//
-//        // calculate position using PanelAlignments
-//        if (this.panelAlign != null) {
-//            switch (this.panelAlign) {
-//                case NORTH:
-//                    yy = (int) cameraBounds.getY();
-//                    break;
-//                case SOUTH:
-//                    yy = (int) cameraBounds.getY() + (int) cameraBounds.getHeight() - this.h;
-//                    break;
-//                case MIDDLE:
-//                    yy = ((int) cameraBounds.getHeight() / 2) - (h / 2);
-//                    xx = ((int) cameraBounds.getWidth() / 2) - (w / 2);
-//                case WEST:
-//                    break;
-//                case EAST:
-//                    xx = ((int) cameraBounds.getWidth()) - w;
-//                default:
-//                    break;
-//            }
-//        }
-//
-//        // cache the calculated position relative to camera
-//        this.xrelcam = xx;
-//        this.yrelcam = yy;
-//
-//        return new Point(xx, yy);
-        return new Point(0, 0);
+        int xx = x, yy = y;
+
+        if(this.horizontalAlign != null) {
+            switch (this.horizontalAlign) {
+                case CENTER:
+                    xx = (Game.instance.WIDTH / 2) - (w / 2);
+                    break;
+                case LEFT:
+                    xx = margin;
+                    break;
+                case RIGHT:
+                    xx = Game.instance.WIDTH - (w + margin);
+                    break;
+            }
+        }
+
+        if(this.verticalAlign != null) {
+            switch (this.verticalAlign) {
+                case TOP:
+                    yy = margin;
+                    break;
+                case BOTTOM:
+                    yy = Game.instance.HEIGHT - (h + margin);
+                    break;
+                case MIDDLE:
+                    yy = (Game.instance.HEIGHT / 2) - (h / 2);
+                    break;
+            }
+        }
+
+        return new Point(xx, yy);
     }
 
     @Override
@@ -192,19 +200,19 @@ public abstract class Panel extends GuiElement {
         }
     }
 
-    public PanelAlign getPanelAlign() {
-        return panelAlign;
+    public VerticalAlign getVerticalAlign() {
+        return verticalAlign;
     }
 
-    public void setPanelAlign(PanelAlign panelAlign) {
-        this.panelAlign = panelAlign;
+    public void setVerticalAlign(VerticalAlign verticalAlign) {
+        this.verticalAlign = verticalAlign;
     }
 
-    public int getXrelcam() {
-        return xrelcam;
+    public HorizontalAlign getHorizontalAlign() {
+        return horizontalAlign;
     }
 
-    public int getYrelcam() {
-        return yrelcam;
+    public void setHorizontalAlign(HorizontalAlign horizontalAlign) {
+        this.horizontalAlign = horizontalAlign;
     }
 }

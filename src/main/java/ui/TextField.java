@@ -4,11 +4,10 @@ import core.Game;
 
 import java.awt.*;
 
-public class TextField extends InteractableGuiElement {
+public class TextField extends GuiElement implements InteractableGuiElement {
 
     private final int borderMargin = 2;
     private final Color fontColor = Colors.BLACK;
-    private final int labelFontSize = 30;
 
     private String value = "";
 
@@ -23,10 +22,12 @@ public class TextField extends InteractableGuiElement {
     private int maxLength;
     private int borderThickness;
 
+    private boolean isHovering = false;
+
     public TextField(Panel panel, int w, int h,
                      int textMargin, int fontSize, int maxlen,
                      boolean isEditable) {
-        super(panel.x, panel.y, w, h, null, null);
+        super(panel.x, panel.y, w, h);
 
         this.maxLength = maxlen;
         this.isEditable = isEditable;
@@ -45,8 +46,8 @@ public class TextField extends InteractableGuiElement {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        int xx = x + parent.xrelcam;
-        int yy = y + parent.yrelcam;
+        int xx = x;
+        int yy = y;
 
         // cache default stroke
         Stroke oldStroke = g2d.getStroke();
@@ -104,100 +105,13 @@ public class TextField extends InteractableGuiElement {
     }
 
     @Override
+    public void setHovering(boolean b) {
+        this.isHovering = b;
+    }
+
+    @Override
     public Rectangle getBounds() {
-        return new Rectangle(x + parent.xrelcam, y + parent.yrelcam, w, h);
-    }
-
-    // ---------
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
-
-    public boolean isEditable() {
-        return isEditable;
-    }
-
-    public void setEditable(boolean editable) {
-        isEditable = editable;
-    }
-
-    public Panel getParent() {
-        return parent;
-    }
-
-    public void setParent(Panel parent) {
-        this.parent = parent;
-    }
-
-    public int getTextMargin() {
-        return textMargin;
-    }
-
-    public void setTextMargin(int margin) {
-        this.textMargin = margin;
-    }
-
-    public int getBorderMargin() { return borderMargin; }
-
-    public int getBorderThickness() {
-        return this.borderThickness;
-    }
-
-    public Color getFontColor() {
-        return fontColor;
-    }
-
-    public int getFontSize() {
-        return fontSize;
-    }
-
-    public void setFontSize(int fontSize) {
-        this.fontSize = fontSize;
-    }
-
-    public Font getFont() {
-        return font;
-    }
-
-    public void setFont(Font font) {
-        this.font = font;
-    }
-
-    public FontMetrics getFontMetrics() {
-        return fontMetrics;
-    }
-
-    public void setFontMetrics(FontMetrics fontMetrics) {
-        this.fontMetrics = fontMetrics;
-    }
-
-    public void setBorderThickness(int borderThickness) {
-        this.borderThickness = borderThickness;
-    }
-
-    public int getMaxLength() {
-        return maxLength;
-    }
-
-    public void setMaxLength(int maxLength) {
-        this.maxLength = maxLength;
-    }
-
-    public int getLabelFontSize() {
-        return labelFontSize;
+        return new Rectangle(x, y, w, h);
     }
 
 }

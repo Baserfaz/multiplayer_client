@@ -8,7 +8,7 @@ public abstract class GuiElement {
     public final int TEXT_LINEHEIGHT = 2;
 
     protected int x, y, w, h;
-    protected boolean isHovering = false, isEnabled = true, isVisible = true;
+    protected boolean isEnabled = true, isVisible = true;
 
     public GuiElement(Panel parent) {
         this.x = parent.x;

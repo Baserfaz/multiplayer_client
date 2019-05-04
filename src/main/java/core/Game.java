@@ -19,7 +19,6 @@ public class Game extends Canvas implements Runnable {
 
     public static final int SPRITE_GRID_SIZE = 16;
     public static final int SPRITE_SIZE_MULT = 4;
-    public static final int SPRITE_UI_SIZE_MULT = 2;
 
     public static final String SPRITESHEET_PATH = "/images/spritesheet.png";
     public static final String FRAME_ICON_PATH = "/images/icon.png";
@@ -95,7 +94,6 @@ public class Game extends Canvas implements Runnable {
     @Override
     public void run() {
         this.serverConnection = new ServerConnection(ADDRESS, PORT);
-        // this.serverConnection.connect();
         this.running = true;
         this.gameLoop();
     }

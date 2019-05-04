@@ -16,8 +16,8 @@ public class GuiImage extends GuiElement {
 
     public void render(Graphics g) {
         if(!this.isVisible) return;
-        int xx = this.x + this.parent.xrelcam;
-        int yy = this.y + this.parent.yrelcam;
+        int xx = this.x;
+        int yy = this.y;
         g.drawImage(this.img, xx , yy, null);
     }
 

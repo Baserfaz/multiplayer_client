@@ -6,12 +6,31 @@ public class VPanel extends Panel {
 
     private HorizontalAlign itemHorAlign;
 
-    public VPanel(PanelAlign panelAlign, int w, int h, Panel parent,
-                  Color bgColor, Color borderColor,
-                  boolean isTransparent, boolean borders, int margin,
-                  HorizontalAlign itemHorAlign) {
+    public VPanel(
+            VerticalAlign va,
+            HorizontalAlign ha,
+            int w,
+            int h,
+            Panel parent,
+            Color bgColor,
+            Color borderColor,
+            boolean isTransparent,
+            boolean borders,
+            int margin,
+            HorizontalAlign itemHorAlign) {
 
-        super(panelAlign, w, h, parent, bgColor, borderColor, isTransparent, borders, 2, margin);
+        super(
+                va,
+                ha,
+                w,
+                h,
+                parent,
+                bgColor,
+                borderColor,
+                isTransparent,
+                borders,
+                2,
+                margin);
         this.itemHorAlign = itemHorAlign;
     }
 
@@ -24,22 +43,19 @@ public class VPanel extends Panel {
         // the items are in the order they were added
         for(GuiElement element : this.getElements()) {
 
-            int xx;
-            int yy = this.y + currentHeight + margin;
+            int xx = x;
+            int yy = y + currentHeight + margin;
 
             switch (itemHorAlign) {
                 case CENTER:
-                    xx = (this.x + this.w / 2) - element.w / 2;
+                    xx = (x + w / 2) - element.w / 2;
                     break;
                 case LEFT:
-                    xx = this.x + margin;
+                    xx = x + margin;
                     break;
                 case RIGHT:
-                    xx = this.x + this.w - margin - element.w;
+                    xx = x + w - margin - element.w;
                     break;
-                default:
-                    System.out.println("VPanel:updatePanelItems: not supported alignment: " + itemHorAlign);
-                    continue;
             }
 
             element.setX(xx);

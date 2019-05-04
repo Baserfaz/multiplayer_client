@@ -29,7 +29,6 @@ public class PlainText extends GuiElement {
                 .deriveFont(Font.PLAIN, fontSize);
 
         FontMetrics fontMetric = new Canvas().getFontMetrics(font);
-
         this.setWidth(fontMetric.stringWidth(text));
         this.setHeight(fontMetric.getHeight());
     }
@@ -41,8 +40,8 @@ public class PlainText extends GuiElement {
         g2d.setColor(color);
         g2d.setFont(font);
 
-        int xx = this.x + this.parent.xrelcam;
-        int yy = y + g2d.getFontMetrics().getHeight() + this.parent.yrelcam;
+        int xx = x;
+        int yy = y + g2d.getFontMetrics().getHeight();
 
         switch (align) {
             case CENTER:
