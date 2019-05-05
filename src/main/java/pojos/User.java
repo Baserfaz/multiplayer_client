@@ -1,6 +1,5 @@
 package pojos;
 
-import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -11,6 +10,10 @@ public class User extends BaseMessage {
 
     private String username, password, salt;
     private LocalDateTime creationDate, lastLoginDate;
+
+    public User(Command command) {
+        this.command = command;
+    }
 
     public User(
             Command command,

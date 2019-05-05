@@ -14,17 +14,38 @@ public class ServerConnection {
     private String address;
     private int port;
 
+    private boolean connecting;
+
     public ServerConnection(String address, int port) {
         this.address = address;
         this.port = port;
+        connecting = false;
     }
 
-    public void connect() {
+    public void disconnect() {
+        if(this.socket != null) {
+            try {
+                this.socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                this.socket = null;
+            }
+        }
+    }
+
+    public boolean connect() {
+
+        disconnect();
+
+        connecting = true;
 
         try {
             this.socket = new Socket(address, port);
         } catch (IOException e) {
             throw new IllegalStateException("Failed to connect to server.");
+        } finally {
+            connecting = false;
         }
 
         try {
@@ -35,45 +56,40 @@ public class ServerConnection {
             throw new IllegalStateException(
                     "Failed to create input and output streams.");
         }
+
+        return true;
     }
 
-    public Socket getSocket() {
-        return socket;
+    public void send(Object obj) {
+        try {
+            this.outputStream.writeObject(obj);
+            this.outputStream.flush();
+        } catch (IOException e) {
+            throw new IllegalStateException(
+                    "Failed to send object!");
+        }
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+    public Object receive() {
+        Object obj;
+        try {
+            obj = this.inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new IllegalStateException(
+                    "Failed to receive object!");
+        }
+        return obj;
     }
 
     public ObjectOutputStream getOutputStream() {
         return outputStream;
     }
 
-    public void setOutputStream(ObjectOutputStream outputStream) {
-        this.outputStream = outputStream;
-    }
-
     public ObjectInputStream getInputStream() {
         return inputStream;
     }
 
-    public void setInputStream(ObjectInputStream inputStream) {
-        this.inputStream = inputStream;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
+    public boolean isConnecting() {
+        return connecting;
     }
 }

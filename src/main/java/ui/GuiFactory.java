@@ -2,6 +2,8 @@ package ui;
 
 import core.Game;
 import core.GameState;
+import pojos.Command;
+import pojos.User;
 
 import java.awt.*;
 
@@ -73,10 +75,13 @@ public class GuiFactory {
         );
     }
 
-    public static Button createDefaultConnectButton(Panel panel) {
+    public static Button createDefaultConnectButton(
+            Panel panel,
+            Runnable connectRunnable) {
+
         return new Button(panel, 600, 50,
                 "Connect", Color.black, Color.white, DEFAULT_FONTSIZE,
-                () -> Game.instance.getServerConnection().connect(),
+                connectRunnable,
                 null);
     }
 

@@ -49,4 +49,12 @@ public class GenericResultPojo implements Serializable {
     public void setSuccess(boolean success) {
         this.success = success;
     }
+
+    public String print() {
+        return "Command: " + command + ", " +
+                (exception != null ? "Exception: " + exception.getMessage() : "") +
+                (message != null ? "Message" + message : "") +
+                success;
+    }
+
 }
