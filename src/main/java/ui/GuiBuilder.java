@@ -36,7 +36,13 @@ public class GuiBuilder {
     private static Runnable createConnectRunnable(TextField username, TextField password) {
         return () -> {
             if(!Game.instance.getServerConnection().isConnecting()) {
-                boolean success = Game.instance.getServerConnection().connect();
+                boolean success = false;
+                try {
+                    success = Game.instance.getServerConnection().connect();
+                } catch (IllegalStateException e) {
+                    GuiFactory.createMessagePanel(e.getMessage());
+                }
+
                 if(success) {
 
                     System.out.println("Connection successful!");
@@ -55,7 +61,11 @@ public class GuiBuilder {
 
                     if(receive != null) {
                         GenericResultPojo resultPojo = (GenericResultPojo) receive;
-                        System.out.println(resultPojo.print());
+                        if(!resultPojo.isSuccess()) {
+                            GuiFactory.createMessagePanel(
+                                    "Failed to login: invalid username & password."
+                            );
+                        }
                     }
                 }
             } else {

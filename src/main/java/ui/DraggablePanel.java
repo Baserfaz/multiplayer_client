@@ -1,5 +1,7 @@
 package ui;
 
+import core.Game;
+
 import java.awt.*;
 
 public class DraggablePanel extends Panel {
@@ -26,6 +28,10 @@ public class DraggablePanel extends Panel {
                 hasBorder,
                 2,
                 0);
+
+        // add this panel to the draw list
+        Game.instance.getGuiElementManager().
+                addElementToMap(Game.instance.getGameState(), this);
     }
 
     @Override
@@ -48,7 +54,12 @@ public class DraggablePanel extends Panel {
         // draw border
         if(this.drawBorders) {
             g.setColor(this.borderColor);
-            g.drawRect(pos.x - 1, pos.y - headerHeight - 1, getWidth() + 1, getHeight() + headerHeight + 1);
+            g.drawRect(
+                    pos.x - 1,
+                    pos.y - headerHeight - 1,
+                    getWidth() + 1,
+                    getHeight() + headerHeight + 1
+            );
         }
 
         // render all child elements

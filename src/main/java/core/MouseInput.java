@@ -9,7 +9,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class MouseInput implements MouseMotionListener, MouseListener {
 
@@ -31,11 +33,17 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         List<Panel> panels = this.guiElementManager.getPanels(Game.instance.getGameState());
         if(panels.isEmpty() || mousePosition == null) return;
 
-        panels.forEach(a -> handlePanelElements(a, mousePosition));
+        ListIterator<Panel> iter = new ArrayList<>(panels).listIterator();
+        while(iter.hasNext()) {
+            Panel next = iter.next();
+            handlePanelElements(next, mousePosition);
+        }
     }
 
     private void handlePanelElements(Panel panel, Point mousePos) {
-        for(GuiElement el : panel.getElements()) {
+        ListIterator<GuiElement> iter = new ArrayList<>(panel.getElements()).listIterator();
+        while(iter.hasNext()) {
+            GuiElement el = iter.next();
             if(el instanceof Panel) { this.handlePanelElements((Panel) el, mousePos); }
             handleClick(el, mousePos);
         }

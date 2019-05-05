@@ -2,8 +2,6 @@ package ui;
 
 import core.Game;
 import core.GameState;
-import pojos.Command;
-import pojos.User;
 
 import java.awt.*;
 
@@ -20,6 +18,27 @@ public class GuiFactory {
     private static final int DEFAULT_TEXTFIELD_HEIGHT = 35;
 
     private static final int DEFAULT_TEXTFIELD_MAXLEN = 15;
+
+    public static Panel createMessagePanel(String message) {
+        DraggablePanel draggablePanel = new DraggablePanel(
+                650, 300, true, Colors.DARK_BLUE);
+
+        draggablePanel.addElement(
+            createDefaultPlainText(
+                    draggablePanel,
+                    HorizontalAlign.CENTER,
+                    message,
+                    Colors.BLACK)
+        );
+
+        draggablePanel.addElement(
+            createDraggablePanelCloseButton(draggablePanel)
+        );
+
+        draggablePanel.shrink();
+
+        return draggablePanel;
+    }
 
     public static PlainText createDefaultPlainText(
             Panel panel,
@@ -83,6 +102,19 @@ public class GuiFactory {
                 "Connect", Color.black, Color.white, DEFAULT_FONTSIZE,
                 connectRunnable,
                 null);
+    }
+
+    public static Button createDraggablePanelCloseButton(DraggablePanel panel) {
+
+        Runnable close = () -> {
+            panel.isVisible = false;
+            panel.isEnabled = false;
+            panel.elements.clear();
+        };
+
+        return new Button(panel, 600, 50,
+                "Close", Color.black, Color.white, DEFAULT_FONTSIZE,
+                close, null);
     }
 
     public static Button createDefaultPlayButton(Panel panel) {

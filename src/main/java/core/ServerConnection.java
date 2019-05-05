@@ -34,7 +34,7 @@ public class ServerConnection {
         }
     }
 
-    public boolean connect() {
+    public boolean connect() throws IllegalStateException {
 
         disconnect();
 
@@ -43,7 +43,8 @@ public class ServerConnection {
         try {
             this.socket = new Socket(address, port);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to connect to server.");
+            throw new IllegalStateException(
+                    "Failed to connect to server. Server is down.");
         } finally {
             connecting = false;
         }

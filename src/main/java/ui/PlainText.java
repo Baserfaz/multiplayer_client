@@ -15,7 +15,7 @@ public class PlainText extends GuiElement {
 
     public PlainText(
             Panel parent, HorizontalAlign align,
-            String text, int size, Color color) {
+            String text, int fontSize, Color color) {
 
         super(parent.x, parent.y, 0, 0);
 
@@ -23,10 +23,10 @@ public class PlainText extends GuiElement {
         this.text = text;
         this.parent = parent;
         this.color = color;
-        this.fontSize = size;
+        this.fontSize = fontSize;
         this.font = Game.instance
                 .getCustomFont()
-                .deriveFont(Font.PLAIN, fontSize);
+                .deriveFont(Font.PLAIN, this.fontSize);
 
         FontMetrics fontMetric = new Canvas().getFontMetrics(font);
         this.setWidth(fontMetric.stringWidth(text));
