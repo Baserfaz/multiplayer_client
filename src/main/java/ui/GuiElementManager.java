@@ -5,6 +5,7 @@ import core.GameState;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
 
 public class GuiElementManager {
 
@@ -21,7 +22,11 @@ public class GuiElementManager {
     }
 
     public void render(Graphics g, GameState state) {
-        for(Panel p : this.getPanels(state)) p.render(g);
+        ListIterator<Panel> iter = this.getPanels(state).listIterator();
+        while(iter.hasNext()) {
+            Panel next = iter.next();
+            next.render(g);
+        }
     }
     
     public void tick(GameState state) {

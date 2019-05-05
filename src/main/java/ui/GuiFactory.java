@@ -19,16 +19,20 @@ public class GuiFactory {
 
     private static final int DEFAULT_TEXTFIELD_MAXLEN = 15;
 
+    // ------------------
+
     public static Panel createMessagePanel(String message) {
-        DraggablePanel draggablePanel = new DraggablePanel(
+
+        PopupPanel draggablePanel = new PopupPanel(
                 650, 300, true, Colors.DARK_BLUE);
 
         draggablePanel.addElement(
-            createDefaultPlainText(
-                    draggablePanel,
-                    HorizontalAlign.CENTER,
-                    message,
-                    Colors.BLACK)
+                new PlainText(
+                        draggablePanel,
+                        HorizontalAlign.CENTER,
+                        message,
+                        28,
+                        Colors.BLACK)
         );
 
         draggablePanel.addElement(
@@ -104,7 +108,7 @@ public class GuiFactory {
                 null);
     }
 
-    public static Button createDraggablePanelCloseButton(DraggablePanel panel) {
+    public static Button createDraggablePanelCloseButton(PopupPanel panel) {
 
         Runnable close = () -> {
             panel.isVisible = false;

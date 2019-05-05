@@ -37,7 +37,6 @@ public class ServerConnection {
     public boolean connect() throws IllegalStateException {
 
         disconnect();
-
         connecting = true;
 
         try {

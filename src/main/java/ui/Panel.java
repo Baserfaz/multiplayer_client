@@ -118,6 +118,8 @@ public abstract class Panel extends GuiElement {
         }
     }
 
+    // this method shrinks the panel
+    // to fit exactly the dimensions of it's children.
     protected void shrink() {
         if(this.elements.isEmpty()) return;
         this.shrinkVertically();

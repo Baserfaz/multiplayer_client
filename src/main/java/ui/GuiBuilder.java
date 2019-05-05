@@ -14,7 +14,8 @@ public class GuiBuilder {
 
         panel.addElement(GuiFactory.createDefaultPlainText(
                 panel, HorizontalAlign.CENTER,
-                "Multiplayer Client", Colors.YELLOW)
+                "Multiplayer Client",
+                Colors.YELLOW)
         );
 
         TextField usernameTextField = GuiFactory.createDefaultTextField(panel, "Username");
