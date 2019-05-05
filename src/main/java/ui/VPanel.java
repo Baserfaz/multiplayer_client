@@ -44,7 +44,7 @@ public class VPanel extends Panel {
         for(GuiElement element : this.getElements()) {
 
             int xx = x;
-            int yy = y + currentHeight + margin;
+            int yy = y + currentHeight + element.getMargin();
 
             switch (itemHorAlign) {
                 case CENTER:
@@ -61,7 +61,7 @@ public class VPanel extends Panel {
             element.setX(xx);
             element.setY(yy);
 
-            currentHeight += element.getHeight() + margin;
+            currentHeight += element.getHeight() + element.getMargin();
         }
     }
 

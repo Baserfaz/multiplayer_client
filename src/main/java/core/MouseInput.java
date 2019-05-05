@@ -29,44 +29,32 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         if(e.getButton() != MouseEvent.BUTTON1) return;
 
         List<Panel> panels = this.guiElementManager.getPanels(Game.instance.getGameState());
-
         if(panels.isEmpty() || mousePosition == null) return;
 
-        for(Panel panel : panels) {
-            handlePanelElements(panel, mousePosition);
-        }
+        panels.forEach(a -> handlePanelElements(a, mousePosition));
     }
 
-    // go through panel's child panels too recursively
     private void handlePanelElements(Panel panel, Point mousePos) {
         for(GuiElement el : panel.getElements()) {
             if(el instanceof Panel) { this.handlePanelElements((Panel) el, mousePos); }
-            if(handleClick(panel, el, mousePos)) break;
+            handleClick(el, mousePos);
         }
     }
 
-    private boolean handleClick(Panel panel, GuiElement el, Point mousePos) {
+    private void handleClick(GuiElement el, Point mousePos) {
 
-        // tie mouse position to camera position
-
-        //Rectangle cameraBounds = Game.instance.getCamera().getCameraBounds();
-        Point mousePoint = mousePos;
-        //mousePoint.x += cameraBounds.x;
-        //mousePoint.y += cameraBounds.y;
-
-        if(!el.getBounds().contains(mousePoint)) {
+        // unfocus everything else
+        if(!el.getBounds().contains(mousePos)) {
             if(el instanceof InteractableGuiElement) {
                 InteractableGuiElement iel = (InteractableGuiElement) el;
                 iel.onUnfocus();
             }
-            return false;
+            return;
         }
 
-        if(!el.isEnabled() || !(el instanceof InteractableGuiElement)) return false;
-        InteractableGuiElement iel = (InteractableGuiElement) el;
-
-        iel.onClick();
-        return true;
+        // focus only the element we clicked on
+        if(!el.isEnabled() || !(el instanceof InteractableGuiElement)) return;
+        ((InteractableGuiElement) el).onClick();
     }
 
     // hover effects on gui elements.
@@ -78,7 +66,7 @@ public class MouseInput implements MouseMotionListener, MouseListener {
 
         this.hoveredOnSomething = false;
 
-        for(Panel panel : panels) { if(handleHoverOnPanelElements(panel, e)) break; }
+        panels.forEach(a -> handleHoverOnPanelElements(a, e));
 
         if(!hoveredOnSomething && this.lastElementHovered != null) {
             if(this.lastElementHovered instanceof InteractableGuiElement) {
@@ -89,35 +77,29 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         }
     }
 
-    private boolean handleHoverOnPanelElements(Panel panel, MouseEvent e) {
+    private void handleHoverOnPanelElements(Panel panel, MouseEvent e) {
         for(GuiElement el : panel.getElements()) {
             if(el instanceof Panel) { this.handleHoverOnPanelElements((Panel) el, e); }
-            if(this.handleHoverOnElement(el, e)) return true;
+            this.handleHoverOnElement(el, e);
         }
-        return false;
     }
 
-    private boolean handleHoverOnElement(GuiElement el, MouseEvent e) {
+    private void handleHoverOnElement(GuiElement el, MouseEvent e) {
+
         if(!(el instanceof InteractableGuiElement) || !el.isEnabled()) {
-            return false;
+            return;
         }
 
-        // tie the mouse position to camera position
-        //Rectangle cameraBounds = Game.instance.getCamera().getCameraBounds();
-        Point mousePoint = e.getPoint();
-        //mousePoint.x += cameraBounds.x;
-        //mousePoint.y += cameraBounds.y;
-
-        boolean hovering = el.getBounds().contains(mousePoint);
-        if(!hovering) return false;
+        boolean hovering = el.getBounds().contains(e.getPoint());
+        if(!hovering) return;
 
         InteractableGuiElement iel = (InteractableGuiElement) el;
-        this.hoveredOnSomething = true;
 
         iel.setHovering(true);
         iel.onHover();
+
+        this.hoveredOnSomething = true;
         this.lastElementHovered = el;
-        return true;
     }
 
     public void mouseDragged(MouseEvent e) {

@@ -43,12 +43,12 @@ public class TextField extends GuiElement implements InteractableGuiElement {
         this.borderThickness = borderMargin * 2;
 
         this.font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, fontSize);
-        this.labelFont = Game.instance.getCustomFont().deriveFont(Font.PLAIN, (float) fontSize / 2);
         this.fontMetrics = new Canvas().getFontMetrics(font);
 
-        // make room for the label if it exists
-        if(this.label != null) {
+        this.labelFont = Game.instance.getCustomFont().deriveFont(Font.PLAIN, (float) fontSize / 2f);
 
+        if(this.label != null) {
+            this.margin = labelFont.getSize() + borderThickness;
         }
     }
 
@@ -95,8 +95,8 @@ public class TextField extends GuiElement implements InteractableGuiElement {
             g2d.setColor(fontColor);
             g2d.drawString(
                     label,
-                    xx + textMargin,
-                    yy + textMargin + (this.fontMetrics.getHeight() / 2)
+                    xx,
+                    yy + textMargin - borderMargin - labelFont.getSize()
             );
         }
     }
@@ -165,5 +165,9 @@ public class TextField extends GuiElement implements InteractableGuiElement {
 
     public int getMaxLength() {
         return maxLength;
+    }
+
+    public String getLabel() {
+        return label;
     }
 }

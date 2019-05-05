@@ -150,21 +150,21 @@ public abstract class Panel extends GuiElement {
                     ((Panel) element).shrink();
                 }
 
-                height += element.getHeight() + margin;
+                height += element.getHeight() + element.getMargin();
             }
 
         } else {
 
             // HPanel
 
-            Integer highestItemHeight = null;
+            GuiElement highestItem = null;
             for (GuiElement element : this.getElements()) {
 
-                if(highestItemHeight == null) {
-                    highestItemHeight = element.getHeight();
+                if(highestItem == null) {
+                    highestItem = element;
                 } else {
-                    if(element.getHeight() > highestItemHeight) {
-                        highestItemHeight = element.getHeight();
+                    if(element.getHeight() > highestItem.getHeight()) {
+                        highestItem = element;
                     }
                 }
 
@@ -173,11 +173,9 @@ public abstract class Panel extends GuiElement {
                 }
             }
 
-            if(highestItemHeight == null) {
-                highestItemHeight = 0;
-            }
-
-            height += highestItemHeight + margin;
+            height += highestItem != null
+                    ? (highestItem.getHeight() + highestItem.margin)
+                    : this.margin;
         }
 
         // shrink the bottom of the panel to fit the content
