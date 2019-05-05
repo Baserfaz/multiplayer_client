@@ -27,18 +27,18 @@ public class GuiFactory {
         return new PlainText(panel, align, text, 40, color);
     }
 
-    public static TextField createDefaultPasswordField(Panel panel) {
+    public static TextField createDefaultPasswordField(Panel panel, String label) {
         return new TextField(panel,
                 DEFAULT_TEXTFIELD_WIDTH, DEFAULT_TEXTFIELD_HEIGHT,
                 15, DEFAULT_FONTSIZE, DEFAULT_TEXTFIELD_MAXLEN,
-                true, true);
+                true, true, label);
     }
 
-    public static TextField createDefaultTextField(Panel panel) {
+    public static TextField createDefaultTextField(Panel panel, String label) {
         return new TextField(panel,
                 DEFAULT_TEXTFIELD_WIDTH, DEFAULT_TEXTFIELD_HEIGHT,
                 15, DEFAULT_FONTSIZE, DEFAULT_TEXTFIELD_MAXLEN,
-                true, false);
+                true, false, label);
     }
 
     public static HPanel createDefaultHorizontalPanel(Panel parent,

@@ -10,11 +10,14 @@ public class TextField extends GuiElement implements InteractableGuiElement {
     private final Color fontColor = Colors.BLACK;
 
     private String value = "";
+    private String label;
 
     private Panel parent;
     private Font font;
+    private Font labelFont;
     private FontMetrics fontMetrics;
 
+    private boolean isHovering = false;
     private boolean isSelected = false;
     private boolean isEditable;
     private boolean isPassword;
@@ -23,11 +26,10 @@ public class TextField extends GuiElement implements InteractableGuiElement {
     private int maxLength;
     private int borderThickness;
 
-    private boolean isHovering = false;
-
     public TextField(Panel panel, int w, int h,
                      int textMargin, int fontSize, int maxlen,
-                     boolean isEditable, boolean isPassword) {
+                     boolean isEditable, boolean isPassword,
+                     String label) {
         super(panel.x, panel.y, w, h);
 
         this.maxLength = maxlen;
@@ -36,11 +38,18 @@ public class TextField extends GuiElement implements InteractableGuiElement {
         this.parent = panel;
         this.textMargin = textMargin;
         this.fontSize = fontSize;
+        this.label = label;
 
         this.borderThickness = borderMargin * 2;
 
         this.font = Game.instance.getCustomFont().deriveFont(Font.PLAIN, fontSize);
+        this.labelFont = Game.instance.getCustomFont().deriveFont(Font.PLAIN, (float) fontSize / 2);
         this.fontMetrics = new Canvas().getFontMetrics(font);
+
+        // make room for the label if it exists
+        if(this.label != null) {
+
+        }
     }
 
     @Override
@@ -48,58 +57,61 @@ public class TextField extends GuiElement implements InteractableGuiElement {
 
         Graphics2D g2d = (Graphics2D) g;
 
+        // use temp variables
         int xx = x;
         int yy = y;
+
+        this.renderButtonRect(g2d, xx, yy);
+        this.renderBorders(g2d, xx, yy);
+        this.renderValue(g2d, xx, yy);
+        this.renderLabel(g2d, xx, yy);
+    }
+
+    private void renderButtonRect(Graphics2D g2d, int xx, int yy) {
+        g2d.setColor(Colors.WHITE);
+        g2d.fillRect(xx, yy, w, h);
+    }
+
+    private void renderBorders(Graphics2D g2d, int xx, int yy) {
 
         // cache default stroke
         Stroke oldStroke = g2d.getStroke();
 
-        // render a box
-        g2d.setColor(Colors.WHITE);
-        g2d.fillRect(xx, yy, w, h);
-
         // set the border thickness
         g2d.setStroke(new BasicStroke(borderThickness));
 
-        // render borders
-        if(isSelected) {
-
-            // make borders glow when selected
-            g2d.setColor(Colors.YELLOW);
-            g2d.drawRect(xx - borderMargin, yy - borderMargin,
-                    w + (borderMargin * 2), h + (borderMargin * 2));
-
-        } else {
-
-            g2d.setColor(Colors.GRAY);
-            g2d.drawRect(xx - borderMargin, yy - borderMargin,
-                    w + (borderMargin * 2), h + (borderMargin * 2));
-
-        }
-
-        // render text
-        g2d.setFont(font);
-        g2d.setColor(fontColor);
-
-        if(this.isPassword) {
-            g2d.drawString(
-                    createPasswordShowValue(),
-                    xx + textMargin,
-                    yy + textMargin + (this.fontMetrics.getHeight() / 2)
-            );
-        } else {
-            g2d.drawString(
-                    value,
-                    xx + textMargin,
-                    yy + textMargin + (this.fontMetrics.getHeight() / 2)
-            );
-        }
+        // borders
+        g2d.setColor(isSelected ? Colors.YELLOW : Colors.GRAY);
+        g2d.drawRect(xx - borderMargin, yy - borderMargin,
+                w + (borderMargin * 2), h + (borderMargin * 2));
 
         // set the old stroke
         g2d.setStroke(oldStroke);
     }
 
-    private String createPasswordShowValue() {
+    private void renderLabel(Graphics2D g2d, int xx, int yy) {
+        if(label != null) {
+            g2d.setFont(labelFont);
+            g2d.setColor(fontColor);
+            g2d.drawString(
+                    label,
+                    xx + textMargin,
+                    yy + textMargin + (this.fontMetrics.getHeight() / 2)
+            );
+        }
+    }
+
+    private void renderValue(Graphics2D g2d, int xx, int yy) {
+        g2d.setFont(font);
+        g2d.setColor(fontColor);
+        g2d.drawString(
+                this.isPassword ? obfuscateValueString() : value,
+                xx + textMargin,
+                yy + textMargin + (this.fontMetrics.getHeight() / 2)
+        );
+    }
+
+    private String obfuscateValueString() {
         String val = "";
         for (int i = 0; i < value.length(); i++) {
             val += "*";

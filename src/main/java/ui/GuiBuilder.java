@@ -12,8 +12,8 @@ public class GuiBuilder {
                 "Multiplayer Client", Colors.YELLOW)
         );
 
-        panel.addElement(GuiFactory.createDefaultTextField(panel));
-        panel.addElement(GuiFactory.createDefaultPasswordField(panel));
+        panel.addElement(GuiFactory.createDefaultTextField(panel, "Username"));
+        panel.addElement(GuiFactory.createDefaultPasswordField(panel, "Password"));
 
         panel.addElement(GuiFactory.createDefaultConnectButton(panel));
         panel.addElement(GuiFactory.createDefaultExitButton(panel));
