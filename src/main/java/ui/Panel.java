@@ -5,6 +5,7 @@ import core.Game;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 public abstract class Panel extends GuiElement {
 
@@ -113,8 +114,11 @@ public abstract class Panel extends GuiElement {
 
         // render all elements inside this panel
         updatePanelItems();
-        for(GuiElement e : elements) {
-            e.render(g);
+
+        ListIterator<GuiElement> iter = new ArrayList<>(elements).listIterator();
+        while(iter.hasNext()) {
+            GuiElement next = iter.next();
+            next.render(g);
         }
     }
 

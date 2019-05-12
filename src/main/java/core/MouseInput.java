@@ -10,8 +10,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 public class MouseInput implements MouseMotionListener, MouseListener {
 
@@ -33,36 +35,85 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         List<Panel> panels = this.guiElementManager.getPanels(Game.instance.getGameState());
         if(panels.isEmpty() || mousePosition == null) return;
 
+        // order panels: highest z-level first
+        panels = panels.stream()
+                .sorted(Comparator.comparing(Panel::getZ).reversed())
+                .collect(Collectors.toList());
+
+        // if this is changed to true,
+        // then we don't want to handle clicks anymore.
+        boolean isClickHandled = false;
+
         ListIterator<Panel> iter = new ArrayList<>(panels).listIterator();
         while(iter.hasNext()) {
             Panel next = iter.next();
-            handlePanelElements(next, mousePosition);
+            boolean b = handlePanelElements(next, mousePosition, isClickHandled);
+
+            // can only once be set to true.
+            // if at any stage it's changed to true, then it no longer can be false.
+            if(!isClickHandled) {
+                isClickHandled = b;
+            }
         }
     }
 
-    private void handlePanelElements(Panel panel, Point mousePos) {
-        ListIterator<GuiElement> iter = new ArrayList<>(panel.getElements()).listIterator();
+    private boolean handlePanelElements(Panel panel, Point mousePos, boolean isClickHandled) {
+
+        // order elements: highest z-level first
+        List<GuiElement> collect = panel.getElements().stream()
+                .sorted(Comparator.comparing(GuiElement::getZ).reversed())
+                .collect(Collectors.toList());
+
+        // use iterator
+        ListIterator<GuiElement> iter = new ArrayList<>(collect).listIterator();
         while(iter.hasNext()) {
             GuiElement el = iter.next();
-            if(el instanceof Panel) { this.handlePanelElements((Panel) el, mousePos); }
-            handleClick(el, mousePos);
+            if(el instanceof Panel) {
+                boolean b = this.handlePanelElements((Panel) el, mousePos, isClickHandled);
+
+                // can only change to true once
+                if(!isClickHandled) {
+                    isClickHandled = b;
+                }
+            }
+            boolean b = handleElement(el, mousePos, isClickHandled);
+
+            // can only change to true once
+            if(!isClickHandled) {
+                isClickHandled = b;
+            }
         }
+
+        return isClickHandled;
     }
 
-    private void handleClick(GuiElement el, Point mousePos) {
+    /**
+     * Returns if click is already handled,
+     * then all other panels and elements are not handled anymore.
+     * @param el
+     * @param mousePos
+     * @return
+     */
+    private boolean handleElement(GuiElement el, Point mousePos, boolean isClickHandled) {
 
-        // unfocus everything else
+        // unfocus everything else that are not clicked
         if(!el.getBounds().contains(mousePos)) {
             if(el instanceof InteractableGuiElement) {
                 InteractableGuiElement iel = (InteractableGuiElement) el;
                 iel.onUnfocus();
             }
-            return;
+            return false;
         }
 
+        // if the element that we clicked is not interactable
+        if(!el.isEnabled()
+                || !(el instanceof InteractableGuiElement)
+                || isClickHandled) return false;
+
         // focus only the element we clicked on
-        if(!el.isEnabled() || !(el instanceof InteractableGuiElement)) return;
-        ((InteractableGuiElement) el).onClick();
+        InteractableGuiElement clickedElement = (InteractableGuiElement) el;
+        clickedElement.onClick();
+        return true;
     }
 
     // hover effects on gui elements.
@@ -74,7 +125,18 @@ public class MouseInput implements MouseMotionListener, MouseListener {
 
         this.hoveredOnSomething = false;
 
-        panels.forEach(a -> handleHoverOnPanelElements(a, e));
+        List<Panel> collect = panels.stream()
+                .sorted(Comparator.comparing(Panel::getZ).reversed())
+                .collect(Collectors.toList());
+
+        boolean hasHoveredOver = false;
+
+        for (Panel a : collect) {
+            boolean b = handleHoverOnPanelElements(a, e, hasHoveredOver);
+            if(!hasHoveredOver) {
+                hasHoveredOver = b;
+            }
+        }
 
         if(!hoveredOnSomething && this.lastElementHovered != null) {
             if(this.lastElementHovered instanceof InteractableGuiElement) {
@@ -85,21 +147,36 @@ public class MouseInput implements MouseMotionListener, MouseListener {
         }
     }
 
-    private void handleHoverOnPanelElements(Panel panel, MouseEvent e) {
-        for(GuiElement el : panel.getElements()) {
-            if(el instanceof Panel) { this.handleHoverOnPanelElements((Panel) el, e); }
-            this.handleHoverOnElement(el, e);
+    private boolean handleHoverOnPanelElements(Panel panel, MouseEvent e, boolean hasHoveredOver) {
+
+        List<GuiElement> collect = panel.getElements().stream()
+                .sorted(Comparator.comparing(GuiElement::getZ).reversed())
+                .collect(Collectors.toList());
+
+        for(GuiElement el : collect) {
+            if(el instanceof Panel) {
+                boolean b = this.handleHoverOnPanelElements((Panel) el, e, hasHoveredOver);
+                if(!hasHoveredOver) {
+                    hasHoveredOver = b;
+                }
+            }
+            boolean b = this.handleHoverOnElement(el, e, hasHoveredOver);
+            if(!hasHoveredOver) {
+                hasHoveredOver = b;
+            }
         }
+
+        return hasHoveredOver;
     }
 
-    private void handleHoverOnElement(GuiElement el, MouseEvent e) {
+    private boolean handleHoverOnElement(GuiElement el, MouseEvent e, boolean hasHoveredOver) {
 
         if(!(el instanceof InteractableGuiElement) || !el.isEnabled()) {
-            return;
+            return false;
         }
 
         boolean hovering = el.getBounds().contains(e.getPoint());
-        if(!hovering) return;
+        if(!hovering || hasHoveredOver){ return false; }
 
         InteractableGuiElement iel = (InteractableGuiElement) el;
 
@@ -108,6 +185,8 @@ public class MouseInput implements MouseMotionListener, MouseListener {
 
         this.hoveredOnSomething = true;
         this.lastElementHovered = el;
+
+        return true;
     }
 
     public void mouseDragged(MouseEvent e) {

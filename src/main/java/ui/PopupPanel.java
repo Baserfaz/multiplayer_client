@@ -25,6 +25,9 @@ public class PopupPanel extends VPanel {
                 2,
                 CENTER);
 
+        // always on top
+        this.z = 100;
+
         // add this panel to the draw list
         Game.instance
                 .getGuiElementManager()

@@ -8,7 +8,7 @@ public abstract class GuiElement {
     public final int TEXT_LINEHEIGHT = 2;
 
     protected int margin;
-    protected int x, y, w, h;
+    protected int x, y, w, h, z;
     protected boolean isEnabled = true, isVisible = true;
 
     public GuiElement(Panel p) {
@@ -24,6 +24,7 @@ public abstract class GuiElement {
         this.y = y;
         this.w = w;
         this.h = h;
+        this.z = 0;
 
         this.margin = 15;
     }
@@ -35,13 +36,36 @@ public abstract class GuiElement {
         this.margin = 0;
     }
 
-    // ---- GETTERS & SETTERS ----
     public Rectangle getBounds() { return new Rectangle(this.x, this.y, this.w, this.h); }
 
     public int getX() { return x; }
     public void setX(int x) { this.x = x; }
     public int getY() { return y; }
     public void setY(int y) { this.y = y; }
+
+    public int getW() {
+        return w;
+    }
+
+    public void setW(int w) {
+        this.w = w;
+    }
+
+    public int getH() {
+        return h;
+    }
+
+    public void setH(int h) {
+        this.h = h;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
+    }
 
     public int getWidth() { return w; }
     public void setWidth(int width) { this.w = width; }
