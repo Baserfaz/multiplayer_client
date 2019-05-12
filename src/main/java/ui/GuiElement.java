@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public abstract class GuiElement {
 
@@ -32,16 +33,21 @@ public abstract class GuiElement {
     public abstract void render(Graphics g);
     public abstract void tick();
 
-    protected void resetMargin() {
-        this.margin = 0;
+    public int getX() {
+        return x;
     }
 
-    public Rectangle getBounds() { return new Rectangle(this.x, this.y, this.w, this.h); }
+    public void setX(int x) {
+        this.x = x;
+    }
 
-    public int getX() { return x; }
-    public void setX(int x) { this.x = x; }
-    public int getY() { return y; }
-    public void setY(int y) { this.y = y; }
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
 
     public int getW() {
         return w;
@@ -67,10 +73,7 @@ public abstract class GuiElement {
         this.z = z;
     }
 
-    public int getWidth() { return w; }
-    public void setWidth(int width) { this.w = width; }
-    public int getHeight() { return h; }
-    public void setHeight(int height) { this.h = height; }
+    public Rectangle getBounds() { return new Rectangle(this.x, this.y, this.w, this.h); }
 
     public boolean isEnabled() { return isEnabled; }
     public void setEnabled(boolean isEnabled) { this.isEnabled = isEnabled; }

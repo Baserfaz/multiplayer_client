@@ -18,7 +18,7 @@ public class Renderer {
         GameState gamestate = Game.instance.getGameState();
 
         if(gamestate == GameState.INGAME) this.renderIngame(g);
-        else if(gamestate== GameState.MAINMENU) this.renderMainMenu(g);
+        else if(gamestate== GameState.LOGINSCREEN) this.renderMainMenu(g);
         else if(gamestate == GameState.LOADING) this.renderLoading(g);
         else if(gamestate == GameState.PAUSEMENU) this.renderPauseMenu(g);
     }

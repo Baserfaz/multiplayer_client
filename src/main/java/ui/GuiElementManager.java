@@ -17,8 +17,10 @@ public class GuiElementManager {
             gameStateToPanelMap.put(state, new ArrayList<>());
         }
 
-        // build mainmenu
-        this.addElementToMap(GameState.MAINMENU, GuiBuilder.createMainMenu());
+        // build login screen
+        this.addElementToMap(GameState.LOGINSCREEN, GuiBuilder.createLoginScreen());
+
+        // TODO: build character screen
     }
 
     public void render(Graphics g, GameState state) {

@@ -20,6 +20,8 @@ public class Game extends Canvas implements Runnable {
     public static final int SPRITE_GRID_SIZE = 16;
     public static final int SPRITE_SIZE_MULT = 4;
 
+    public static final int CALCULATED_SPRITE_SIZE = SPRITE_GRID_SIZE * SPRITE_SIZE_MULT;
+
     public static final String SPRITESHEET_PATH = "/images/spritesheet.png";
     public static final String FRAME_ICON_PATH = "/images/icon.png";
 
@@ -88,7 +90,7 @@ public class Game extends Canvas implements Runnable {
                 this.guiElementManager
         );
 
-        this.gameState = GameState.MAINMENU;
+        this.gameState = GameState.LOGINSCREEN;
     }
 
     @Override

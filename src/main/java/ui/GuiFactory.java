@@ -2,8 +2,12 @@ package ui;
 
 import core.Game;
 import core.GameState;
+import core.SpriteType;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiFactory {
 
@@ -21,27 +25,69 @@ public class GuiFactory {
 
     // ------------------
 
+    public static Panel createLoadingPane(String msg) {
+
+        PopupPanel popupPanel = new PopupPanel(
+                350, 100, true, Colors.DARK_BLUE);
+
+        popupPanel.addElement(
+                GuiFactory.createDefaultPlainText(
+                        popupPanel,
+                        HorizontalAlign.CENTER,
+                        msg,
+                        Colors.BLACK)
+        );
+
+        // create animation frames
+        List<BufferedImage> frames = new ArrayList<>();
+        frames.add(
+                Game.instance
+                        .getSpriteStorage()
+                        .getSprite(SpriteType.LOADING_0)
+        );
+        frames.add(
+                Game.instance
+                        .getSpriteStorage()
+                        .getSprite(SpriteType.LOADING_1)
+        );
+        frames.add(
+                Game.instance
+                        .getSpriteStorage()
+                        .getSprite(SpriteType.LOADING_2)
+        );
+
+        popupPanel.addElement(
+                new GuiAnimation(
+                        popupPanel,
+                        frames,
+                        HorizontalAlign.CENTER
+                )
+        );
+        popupPanel.shrink();
+        return popupPanel;
+    }
+
     public static Panel createMessagePanel(String message) {
 
-        PopupPanel draggablePanel = new PopupPanel(
+        PopupPanel popupPanel = new PopupPanel(
                 650, 300, true, Colors.DARK_BLUE);
 
-        draggablePanel.addElement(
+        popupPanel.addElement(
                 new PlainText(
-                        draggablePanel,
+                        popupPanel,
                         HorizontalAlign.CENTER,
                         message,
                         28,
                         Colors.BLACK)
         );
 
-        draggablePanel.addElement(
-            createDraggablePanelCloseButton(draggablePanel)
+        popupPanel.addElement(
+            createDraggablePanelCloseButton(popupPanel)
         );
 
-        draggablePanel.shrink();
+        popupPanel.shrink();
 
-        return draggablePanel;
+        return popupPanel;
     }
 
     public static PlainText createDefaultPlainText(

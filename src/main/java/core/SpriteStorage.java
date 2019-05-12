@@ -15,7 +15,7 @@ public class SpriteStorage {
     public void loadSprites() {
         SpriteCreator sc = Game.instance.getSpriteCreator();
         for(SpriteType s : SpriteType.values()) {
-            BufferedImage img = sc.CreateSprite(s);
+            BufferedImage img = sc.createSprite(s);
             if(img != null) { this.addSprite(s, img); }
         }
     }

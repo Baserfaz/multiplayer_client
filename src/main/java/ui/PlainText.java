@@ -29,8 +29,8 @@ public class PlainText extends GuiElement {
                 .deriveFont(Font.PLAIN, this.fontSize);
 
         FontMetrics fontMetric = new Canvas().getFontMetrics(font);
-        this.setWidth(fontMetric.stringWidth(text));
-        this.setHeight(fontMetric.getHeight());
+        this.w = fontMetric.stringWidth(text);
+        this.h = fontMetric.getHeight();
     }
 
     @Override

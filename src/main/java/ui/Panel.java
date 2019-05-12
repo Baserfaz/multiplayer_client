@@ -47,9 +47,7 @@ public abstract class Panel extends GuiElement {
         this.borderThickness = borderThickness;
     }
 
-    public List<GuiElement> getElements() {
-        return elements;
-    }
+    public abstract void updatePanelItems();
 
     protected Point calculatePanelAlignmentPos() {
 
@@ -112,14 +110,31 @@ public abstract class Panel extends GuiElement {
             g2d.setStroke(defaultStroke);
         }
 
-        // render all elements inside this panel
         updatePanelItems();
 
+        // render all elements inside this panel
         ListIterator<GuiElement> iter = new ArrayList<>(elements).listIterator();
         while(iter.hasNext()) {
             GuiElement next = iter.next();
             next.render(g);
         }
+    }
+
+    @Override
+    public void tick() {
+        for(GuiElement e : elements) {
+            e.tick();
+        }
+    }
+
+    public void disable() {
+        this.getElements().forEach(e -> {
+                e.isEnabled = false;
+                e.isVisible = false;
+        });
+
+        this.isEnabled = false;
+        this.isVisible = false;
     }
 
     // this method shrinks the panel
@@ -156,7 +171,7 @@ public abstract class Panel extends GuiElement {
                     ((Panel) element).shrink();
                 }
 
-                height += element.getHeight() + element.getMargin();
+                height += element.getH() + element.getMargin();
             }
 
         } else {
@@ -169,7 +184,7 @@ public abstract class Panel extends GuiElement {
                 if(highestItem == null) {
                     highestItem = element;
                 } else {
-                    if(element.getHeight() > highestItem.getHeight()) {
+                    if(element.getH() > highestItem.getH()) {
                         highestItem = element;
                     }
                 }
@@ -180,15 +195,13 @@ public abstract class Panel extends GuiElement {
             }
 
             height += highestItem != null
-                    ? (highestItem.getHeight() + highestItem.margin)
+                    ? (highestItem.getH() + highestItem.margin)
                     : this.margin;
         }
 
         // shrink the bottom of the panel to fit the content
-        this.setHeight(height);
+        this.h = height;
     }
-
-    public abstract void updatePanelItems();
 
     public GuiElement addElement(GuiElement e) {
         if(!this.elements.contains(e)) {
@@ -201,11 +214,8 @@ public abstract class Panel extends GuiElement {
         this.elements.remove(e);
     }
 
-    @Override
-    public void tick() {
-        for(GuiElement e : elements) {
-            e.tick();
-        }
+    public List<GuiElement> getElements() {
+        return elements;
     }
 
     public VerticalAlign getVerticalAlign() {

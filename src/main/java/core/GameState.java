@@ -1,5 +1,9 @@
 package core;
 
 public enum GameState {
-    INGAME, MAINMENU, LOADING, PAUSEMENU
+    INGAME,
+    LOGINSCREEN,
+    CHARACTERSCREEN,
+    PAUSEMENU,
+    LOADING
 }

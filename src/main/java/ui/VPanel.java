@@ -7,10 +7,8 @@ public class VPanel extends Panel {
     private HorizontalAlign itemHorAlign;
 
     public VPanel(
-            VerticalAlign va,
-            HorizontalAlign ha,
-            int w,
-            int h,
+            VerticalAlign va, HorizontalAlign ha,
+            int w, int h,
             Panel parent,
             Color bgColor,
             Color borderColor,
@@ -19,18 +17,11 @@ public class VPanel extends Panel {
             int margin,
             HorizontalAlign itemHorAlign) {
 
-        super(
-                va,
-                ha,
-                w,
-                h,
-                parent,
-                bgColor,
-                borderColor,
-                isTransparent,
-                borders,
-                2,
-                margin);
+        super(va, ha, w, h, parent,
+                bgColor, borderColor, isTransparent,
+                borders, 2, margin
+        );
+
         this.itemHorAlign = itemHorAlign;
     }
 
@@ -61,7 +52,7 @@ public class VPanel extends Panel {
             element.setX(xx);
             element.setY(yy);
 
-            currentHeight += element.getHeight() + element.getMargin();
+            currentHeight += element.getH() + element.getMargin();
         }
     }
 

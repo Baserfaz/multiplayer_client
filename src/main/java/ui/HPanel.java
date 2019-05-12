@@ -59,7 +59,7 @@ public class HPanel extends Panel {
             element.setX(xx);
             element.setY(yy);
 
-            currentWidth += element.getWidth() + margin;
+            currentWidth += element.getW() + margin;
         }
     }
 }

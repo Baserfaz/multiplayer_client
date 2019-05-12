@@ -5,8 +5,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -43,8 +41,9 @@ public class SpriteCreator {
         pixels = image.getRGB(0, 0, width, height, null, 0, width);
     }
 
-    // https://stackoverflow.com/questions/9558981/flip-image-with-graphics2d
     public BufferedImage FlipSpriteVertically(BufferedImage img) {
+        // see : https://stackoverflow.com/questions/9558981/flip-image-with-graphics2d
+
         AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
         tx.translate(0, -img.getHeight(null));
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
@@ -52,8 +51,9 @@ public class SpriteCreator {
         return image;
     }
 
-    // https://stackoverflow.com/questions/9558981/flip-image-with-graphics2d
     public BufferedImage FlipSpriteHorizontally(BufferedImage img) {
+        // see: https://stackoverflow.com/questions/9558981/flip-image-with-graphics2d
+
         AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
         tx.translate(-img.getWidth(null), 0);
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
@@ -83,7 +83,6 @@ public class SpriteCreator {
         
         return image;
     }
-    
 
     public BufferedImage createCustomSizeSprite(
             int startx, int starty,
@@ -123,14 +122,6 @@ public class SpriteCreator {
         sprite = op.filter(sprite, null);
 
         return sprite;
-    }
-
-    public List<BufferedImage> createAllSprites() {
-        List<BufferedImage> imgs = new ArrayList<BufferedImage>();
-        for(SpriteType s : SpriteType.values()) {
-            imgs.add(this.CreateSprite(s));
-        }
-        return imgs;
     }
     
     public BufferedImage[] createMultipleSprites(int column, int row, int length) {    
@@ -180,7 +171,7 @@ public class SpriteCreator {
         return sprites;
     }
     
-    public BufferedImage CreateSprite(SpriteType type) {	
+    public BufferedImage createSprite(SpriteType type) {
 
         int spriteSize = Game.SPRITE_GRID_SIZE;
         int spriteSizeMult = Game.SPRITE_SIZE_MULT;
@@ -294,6 +285,22 @@ public class SpriteCreator {
     private Point getSpriteCoordinates(SpriteType type) {
         Point pos = new Point(0, 0);
         switch(type) {
+
+            case LOADING_0:
+                pos.x = 0;
+                pos.y = 9;
+                break;
+
+            case LOADING_1:
+                pos.x = 1;
+                pos.y = 9;
+                break;
+
+            case LOADING_2:
+                pos.x = 2;
+                pos.y = 9;
+                break;
+
             default:
                 System.out.println("Could not find a sprite of spritetype:" + type);
                 break;

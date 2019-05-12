@@ -67,7 +67,7 @@ public class KeyInput extends KeyAdapter {
 
         // -------------- HANDLE INPUTS ------------------
 
-        if(Game.instance.getGameState() == GameState.MAINMENU) this.handleKeysInMenu(e);
+        if(Game.instance.getGameState() == GameState.LOGINSCREEN) this.handleKeysInMenu(e);
         else if(Game.instance.getGameState() == GameState.INGAME) this.handleKeysInGame(e);
         else if(Game.instance.getGameState() == GameState.PAUSEMENU) this.handleKeysInPauseMenu(e);
         
