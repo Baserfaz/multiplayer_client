@@ -27,12 +27,18 @@ public class GuiElementManager {
         ListIterator<Panel> iter = this.getPanels(state).listIterator();
         while(iter.hasNext()) {
             Panel next = iter.next();
-            next.render(g);
+            if(next.isVisible) {
+                next.render(g);
+            }
         }
     }
     
     public void tick(GameState state) {
-        for(GuiElement e : this.getPanels(state)) e.tick();
+        for(GuiElement e : this.getPanels(state)) {
+            if(e.isEnabled) {
+                e.tick();
+            }
+        }
     }
     
     public void activateGuiElementsInGameState(GameState state) {
