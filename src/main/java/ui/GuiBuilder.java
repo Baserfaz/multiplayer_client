@@ -28,7 +28,10 @@ public class GuiBuilder {
         panel.addElement(GuiFactory.createDefaultConnectButton(
                 panel,
                 GuiActionCreator.createConnectRunnable(
-                        usernameTextField, passwordTextField))
+                        usernameTextField.getValue(),
+                        passwordTextField.getValue(),
+                        createNewAccountCheckbox.isSelected())
+                )
         );
         panel.addElement(GuiFactory.createDefaultExitButton(panel));
 
