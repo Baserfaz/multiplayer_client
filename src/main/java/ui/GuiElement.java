@@ -1,8 +1,11 @@
 package ui;
 
+import core.Game;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public abstract class GuiElement {
 
@@ -63,6 +66,24 @@ public abstract class GuiElement {
 
     public void setH(int h) {
         this.h = h;
+    }
+
+    public void setW(double w) {
+        if(w < 0) { this.w = 0;
+        } else if(w > 1.0) { this.w = Game.instance.WIDTH; }
+
+        this.w = new BigDecimal(Game.instance.WIDTH)
+                .multiply(new BigDecimal(w).setScale(2, RoundingMode.HALF_UP))
+                .intValue();
+    }
+
+    public void setH(double h) {
+        if(h < 0) { this.h = 0;
+        } else if(h > 1.0) { this.h = Game.instance.HEIGHT; }
+
+        this.h = new BigDecimal(Game.instance.HEIGHT)
+                .multiply(new BigDecimal(h).setScale(2, RoundingMode.HALF_UP))
+                .intValue();
     }
 
     public int getZ() {

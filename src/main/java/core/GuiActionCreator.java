@@ -3,17 +3,37 @@ package core;
 import pojos.Command;
 import pojos.GenericResultPojo;
 import pojos.User;
+import ui.Checkbox;
 import ui.GuiFactory;
 import ui.Panel;
+import ui.TextField;
 
 public class GuiActionCreator {
 
+    public static Runnable createNewCharacterRunnable() {
+        return () -> {
+
+        };
+    }
+
+    public static Runnable createLogoutRunnable() {
+        return () -> {
+
+
+
+        };
+    }
+
     public static Runnable createConnectRunnable(
-            String username,
-            String password,
-            boolean createNewAccount) {
+            TextField usernameField,
+            TextField passwordField,
+            Checkbox createNewAccountCheckbox) {
 
         return () -> {
+
+            String username = usernameField.getValue();
+            String password = passwordField.getValue();
+            boolean createNewAccount = createNewAccountCheckbox.isSelected();
 
             if(username.trim().isEmpty() || password.trim().isEmpty()) {
                 GuiFactory.createMessagePanel("Username and password are both required.");
@@ -57,6 +77,8 @@ public class GuiActionCreator {
 
                     if(receive != null) {
                         if(((GenericResultPojo) receive).isSuccess()) {
+                            System.out.println("Login success!");
+                            // todo: changing game state here freezes the client
                             Game.instance.setGameState(GameState.CHARACTERSCREEN);
                         } else {
                             GuiFactory.createMessagePanel(

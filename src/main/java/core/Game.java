@@ -145,13 +145,13 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void onGameStateChange() {
-        this.guiElementManager.activateGuiElementsInGameState(this.gameState);
+        this.guiElementManager.activateGuiElementsInGameState(gameState);
     }
 
     private void tick() {
 
         // handle game state change.
-        if (this.lastGameState != this.gameState) {
+        if (this.lastGameState != gameState) {
             this.onGameStateChange();
         }
 
@@ -160,10 +160,10 @@ public class Game extends Canvas implements Runnable {
         }
 
         // always tick gui
-        this.guiElementManager.tick(this.gameState);
+        this.guiElementManager.tick(gameState);
 
         // cache last frame's state
-        this.lastGameState = this.gameState;
+        this.lastGameState = gameState;
     }
 
     private void render() {

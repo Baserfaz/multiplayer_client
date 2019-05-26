@@ -1,7 +1,7 @@
 package ui;
 
 import core.Game;
-import core.GameState;
+import core.GuiActionCreator;
 import core.SpriteType;
 
 import java.awt.*;
@@ -14,14 +14,15 @@ public class GuiFactory {
     private static final int DEFAULT_PANEL_WIDTH = 500;
     private static final int DEFAULT_PANEL_HEIGHT = 300;
 
-    private static final int DEFAULT_BUTTON_WIDTH = 150;
-    private static final int DEFAULT_BUTTON_HEIGHT = 35;
     private static final int DEFAULT_FONTSIZE = 40;
 
     private static final int DEFAULT_TEXTFIELD_WIDTH = 350;
     private static final int DEFAULT_TEXTFIELD_HEIGHT = 35;
 
     private static final int DEFAULT_TEXTFIELD_MAXLEN = 15;
+
+    private static final int DEFAULT_BUTTON_WIDTH = 600;
+    private static final int DEFAULT_BUTTON_HEIGHT = 50;
 
     // ------------------
 
@@ -39,6 +40,7 @@ public class GuiFactory {
         );
 
         // create animation frames
+        // todo: animation creater class
         List<BufferedImage> frames = new ArrayList<>();
         frames.add(
                 Game.instance
@@ -63,6 +65,7 @@ public class GuiFactory {
                         HorizontalAlign.CENTER
                 )
         );
+
         popupPanel.shrink();
         return popupPanel;
     }
@@ -82,7 +85,7 @@ public class GuiFactory {
         );
 
         popupPanel.addElement(
-            createDraggablePanelCloseButton(popupPanel)
+            createCloseButtonForPopUpPanel(popupPanel)
         );
 
         popupPanel.shrink();
@@ -144,17 +147,28 @@ public class GuiFactory {
         );
     }
 
+    public static Button createLogoutButton(Panel panel) {
+        return new Button(panel,
+                DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
+                "Logout",
+                Colors.BLACK, Colors.BLUE,
+                DEFAULT_FONTSIZE,
+                GuiActionCreator.createLogoutRunnable(),
+                null
+        );
+    }
+
     public static Button createDefaultConnectButton(
             Panel panel,
             Runnable connectRunnable) {
 
-        return new Button(panel, 600, 50,
-                "Connect", Color.black, Color.white, DEFAULT_FONTSIZE,
+        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
+                "Connect", Colors.BLACK, Colors.WHITE, DEFAULT_FONTSIZE,
                 connectRunnable,
                 null);
     }
 
-    public static Button createDraggablePanelCloseButton(PopupPanel panel) {
+    public static Button createCloseButtonForPopUpPanel(PopupPanel panel) {
 
         Runnable close = () -> {
             panel.isVisible = false;
@@ -162,35 +176,21 @@ public class GuiFactory {
             panel.elements.clear();
         };
 
-        return new Button(panel, 600, 50,
-                "Close", Color.black, Color.white, DEFAULT_FONTSIZE,
+        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
+                "Close", Colors.BLACK, Colors.WHITE, DEFAULT_FONTSIZE,
                 close, null);
     }
 
-    public static Button createDefaultPlayButton(Panel panel) {
-        return new Button(panel, 600, 50,
-                "Play", Color.black, Color.white, DEFAULT_FONTSIZE,
-                null, null);
-    }
-
-    public static Button createDefaultExitToMainMenuButton(Panel panel) {
-        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
-                "Exit to mainmenu", Color.black, Color.white, DEFAULT_FONTSIZE,
-                null, null);
-    }
-
     public static Button createDefaultExitButton(Panel panel) {
-        return new Button(panel, 600, 50,
-                "Exit", Color.black, Color.white, DEFAULT_FONTSIZE,
+        return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
+                "Exit", Colors.BLACK, Colors.WHITE, DEFAULT_FONTSIZE,
                 () -> System.exit(0), null);
     }
 
-    public static Button createDefaultResumeButton(Panel panel) {
+    public static Button createCharacterButton(Panel panel) {
         return new Button(panel, DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT,
-                "Resume", Color.black, Color.white, DEFAULT_FONTSIZE,
-                () -> {
-                    Game.instance.setGameState(GameState.INGAME);
-                }, null);
+                "Create Character", Colors.BLACK, Colors.WHITE, DEFAULT_FONTSIZE,
+                GuiActionCreator.createNewCharacterRunnable(), null);
     }
 
 }

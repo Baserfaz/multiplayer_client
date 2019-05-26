@@ -19,8 +19,7 @@ public class GuiElementManager {
 
         // build login screen
         this.addElementToMap(GameState.LOGINSCREEN, GuiBuilder.createLoginScreen());
-
-        // TODO: build character screen
+        this.addElementToMap(GameState.CHARACTERSCREEN, GuiBuilder.createCharacterSelectionScreen());
     }
 
     public void render(Graphics g, GameState state) {
